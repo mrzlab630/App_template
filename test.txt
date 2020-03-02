@@ -1,6 +1,0 @@
-    "dev:build": "cross-env NODE_ENV=development webpack --mode development --config webpack_config/webpack.dev.config.js",
-    "dev:start":"nodemon  dist/index.*.js  --watch",
-    "dev": "concurrently \"yarn dev:build\" \"yarn dev:start\" ",
-
-
-        "dev": "cross-env NODE_ENV=development concurrently \"webpack --mode development --config webpack_config/webpack.dev.config.js --watch\" \"nodemon  dist/index.*.js\"",
