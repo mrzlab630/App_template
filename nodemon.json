@@ -1,0 +1,12 @@
+{
+  "restartable": "rs",
+  "watch": ["dist"],
+  "ignore": [
+    ".git",
+    "node_modules/**/node_modules",
+    "doc",
+    "dist/logs/**"
+  ],
+  "verbose": true,
+  "ext": "js,jsx,ts,tsx,scss,css,les,json"
+}

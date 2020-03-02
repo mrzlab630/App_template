@@ -10,6 +10,5 @@
 
 
 module.exports = {
-    port: 4001,
-    devServerPort:5001
+    port: 4001
 };

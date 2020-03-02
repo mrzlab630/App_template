@@ -12,11 +12,11 @@ const path = require('path');
 const isDev = process.env.NODE_ENV === 'development';
 
 
-const output = {
-    path: path.resolve(__dirname, "../dist"),
-    publicPath: "",
-    filename: isDev ? '[name].js' : '[name].[hash].js'
-};
+const output = (dir) => ({
+                        path: path.resolve(__dirname, dir),
+                        publicPath: "",
+                        filename: isDev ? '[name].js' : '[name].[hash].js'
+                    });
 
 
 

@@ -7,6 +7,7 @@ export default class ApiServiceFretch {
     async getResurce(url,method = 'POST',action = false,body = false){
         try {
             const nocache = new Date().getTime();
+            const actionVAl = action ? 'action=${action}&' : false;
             const res = await fetch(url, {
                 method: method,
                 headers: {
@@ -15,7 +16,7 @@ export default class ApiServiceFretch {
                     'Cache-Control': 'no-cache',
                    // 'Content-Encoding': 'gzip, deflate',
                 },
-                body: method === 'POST' ? `action=${action}&json=${JSON.stringify(body)}&nocache=${nocache}` : null
+                body: method === 'POST' ? `${actionVAl}json=${JSON.stringify(body)}&nocache=${nocache}` : null
 
             });
 
@@ -47,7 +48,7 @@ export default class ApiServiceFretch {
     }
 
 
-    postData(pageUrl,data){
+    postData(pageUrl,action,data){
         return this.getResurce(pageUrl,`POST`,action,data);
     }
 

@@ -10,7 +10,7 @@
 
 const target = {
     backend:'node',
-    frontend:'browser'
+    frontend:'web'
 };
 
 

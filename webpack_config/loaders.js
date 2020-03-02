@@ -14,6 +14,7 @@ const isDev = process.env.NODE_ENV === 'development';
 
 
 
+
 const styleloadersInFile = ext =>{
 
     let defLoaders = [{
@@ -81,6 +82,11 @@ const scssInStyle = {
     use:['style-loader','css-loader','sass-loader']
 };
 
+const ignoreStyle =  {
+    test: /\.(css|scss|less)$/,
+    loader: "ignore-loader"
+};
+
 const js = {
     test: /\.js$/,
     exclude: path.resolve(__dirname, '../node_modules'),
@@ -100,12 +106,12 @@ const reactJsxTsx = {
 };
 
 const imgs = {
-    test: /'.(png|jpe?g|gif)$/,
+    test: /\.(png|jpe?g|gif)$/,
     use:['file-loader']
 };
 
 const svgToUrl = {
-    test: /'.svg$/,
+    test: /\.svg$/,
     use:[{
         loader: 'svg-url-loader',
         options: {
@@ -116,11 +122,19 @@ const svgToUrl = {
 };
 
 const fonts = {
-    test: /'.(ttf|woff|woff2|eot)$/,
+    test: /\.(ttf|woff|woff2|eot)$/,
     use:[{
     loader: "file-loader",
-        options:{name: `src/public/assets/fonts/[name].[ext]`}
+        options:{name: `src/assets/fonts/[name].[ext]`}
         }]
+};
+
+const html = {
+    test: /\.html$/,
+    use:[{
+        loader: "html-loader",
+
+    }]
 };
 
 
@@ -134,7 +148,9 @@ module.exports =  {
                         scssInStyle,
                         lessInFile,
                         lessInStyle,
+                        ignoreStyle,
                         imgs,
                         svgToUrl,
-                        fonts
+                        fonts,
+                        html
                     };

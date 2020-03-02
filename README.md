@@ -1,10 +1,8 @@
-## Application template
+## Application template for server side rendering
 
 ### with:
 
 webpack
- 
-webpack-dev-server
  
 babel
  
@@ -21,6 +19,12 @@ less
 typescript
  
 react
+
+enzyme
+
+mocha
+
+chai
  
  <br>
   <br>
@@ -30,7 +34,10 @@ react
  **port** for  webpack-dev-server and App server in config.js
  
  **copyStaticAssets.js** -- copy static from src/public/ to dist/static/
+ 
  **ip.js** -- local and lan ip address
+ 
+ **createFile.js** -- create index.js in dist
  
  **__isBrowser__** global var for SSR
  

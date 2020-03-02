@@ -23,8 +23,10 @@ import cors from 'cors';
 import graphqlHTTP from 'express-graphql';
 import {appSchema} from './schema';
 
+import {ssr} from './routing/server';
+
 import {getLocalExternalIP} from './utilities';
-import {port,devServerPort} from '../config';
+import {port} from '../config';
 
 
 
@@ -53,6 +55,7 @@ const accessLogStream = rfs.createStream(generator,{
     path: logDirectory
 });
 
+
 const corsOptions = {
     "origin": "*",
     "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
@@ -80,7 +83,7 @@ app.use(compression({
 app.use(morgan('combined',{stream:accessLogStream}));
 
 
-app.use('/public', express.static(path.resolve(__dirname, 'public')));
+app.use('/public', express.static(path.resolve(__dirname,'public')));
 
 
 app.use(
@@ -90,15 +93,17 @@ app.use(
                         graphiql: true})
 );
 
+app.get("/*", ssr);
 
 const servPortDetect = port || 4000;
 const myIp = getLocalExternalIP();
 
 server.listen(servPortDetect, function listenHandler() {
-    console.info(`~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    console.info(`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ->        🚀 Server is start        
 ->                    You can open:
-->                    local machine 💻: http://localhost:${servPortDetect} | devServer: http://localhost:${devServerPort}
-->                    lan 🌐: http://${myIp}:${servPortDetect} | devServer: http://${myIp}:${devServerPort}
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`);
+->                    local machine 💻: http://localhost:${servPortDetect} | lan 🌐: http://${myIp}:${servPortDetect}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+`);
 });

@@ -1,15 +1,31 @@
 {
   "parser": "babel-eslint",
   "rules": {
-    "no-unused-vars": "warn"
+    "no-unused-vars": "warn",
+    "react/prop-types": 0
   },
   "env": {
     "es6": true,
     "jest":true,
     "node": true,
-    "browser": true
+    "web": true
+  },
+  "globals": {
+    "sessionStorage": true,
+    "localStorage": true,
+    "window": true,
+    "document": true,
+    "__isBrowser__": true,
+    "node": true,
+    "web": true
   },
   "extends": [
-    "eslint:recommended"
-  ]
+    "eslint:recommended",
+    "plugin:react/recommended"
+  ],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  }
 }

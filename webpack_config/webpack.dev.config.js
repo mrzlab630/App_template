@@ -1,75 +1,78 @@
-const path = require('path');
 const externals = require('./externals');
 
 const {js,
-        ts,
-        reactJsxTsx,
-        cssInStyle,
-        scssInStyle,
-        lessInStyle,
-        imgs,
-        svgToUrl,
-        fonts} = require('./loaders');
-const configApp  = require('../config');
+    ts,
+    reactJsxTsx,
+    cssInStyle,
+    scssInStyle,
+    lessInStyle,
+    ignoreStyle,
+    imgs,
+    svgToUrl,
+    fonts,
+    html} = require('./loaders');
 const plugins  = require('./plugins');
 const entry = require('./entry');
 const output = require('./output');
 const target = require('./target');
+const resolve = require('./resolve');
+const mode = require('./mode');
+const watch = require('./watch');
+const appPort = require('../config');
+
+
+const watchRes = watch();
 
 
 const serverConfig = {
-    mode: 'development',
-    devtool: 'source-map',
-    target: target.backend,
-    node: {
-        __dirname: false
-    },
-    externals: externals,
-    entry: entry,
+                        mode: mode.dev,
+                        target: target.backend,
+                        externals: externals,
+                        node: {
+                            __dirname: false
+                        },
+                        entry: entry.server,
+                        module: {
+                            rules: [
+                                js,
+                                ts,
+                                reactJsxTsx,
+                                ignoreStyle
+                            ]
+                        },
+                        plugins:plugins(false),
+                        output: output("../dist"),
+                        resolve:resolve,
+                        watch:watchRes.watch,
+                        watchOptions:watchRes.watchOptions
+                    }
+
+const clientConfig = {
+    mode: mode.dev,
+    target: target.frontend,
+    entry: entry.client,
     module: {
-        rules: [
-                js,
-                ts,
-                reactJsxTsx,
-                cssInStyle,
-                scssInStyle,
-                lessInStyle,
-                imgs,
-                svgToUrl,
-                fonts
-                ]
+        rules:  [
+            js,
+            ts,
+            reactJsxTsx,
+            cssInStyle,
+            scssInStyle,
+            lessInStyle,
+            imgs,
+            svgToUrl,
+            fonts,
+            html
+        ]
     },
-    resolve:{
-            extensions:['.js','.css','.scss','.png','.svg','.jpg'],
-        alias:{
-            '@': path.resolve(__dirname, 'src'),
-            '@utilities': path.resolve(__dirname, 'src/utilities'),
+    optimization: {
+        splitChunks: {
+            chunks: 'all'
         }
     },
-    devServer:{
-        port:configApp.devServerPort,
-        contentBase: path.resolve(__dirname, "../dist"),
-        watchContentBase: true,
-        hot: true,
-        inline:true,
-        open: true,
-        proxy: {
-            '/': {
-                target: 'http://localhost:'+configApp.port,
-                secure: false,
-
-            }
-        },
-        overlay: {
-            warnings: false,
-            errors: false,
-        },
-    },
-    plugins:plugins(),
-    output: output
+    plugins:plugins(true),
+    output: output("../dist/public"),
+    resolve:resolve
 };
 
-
-
-
-module.exports = [serverConfig];
+module.exports = [serverConfig, clientConfig]

@@ -22,34 +22,47 @@ const ManifestPlugin = require('webpack-manifest-plugin');
 const {GenerateSW,InjectManifest} = require('workbox-webpack-plugin');
 
 
+
 const isDev = process.env.NODE_ENV === 'development';
 
 
 
-const plugins = () =>{
+const plugins = (isBrowser) =>{
+
+
+    let plugNodeOrWeb = isBrowser
+        ? []
+        : [
+                new CopyWebpackPlugin([
+                    {
+                        from: path.resolve(__dirname, '../src/public'),
+                        to: path.resolve(__dirname, '../dist/public')
+                    }
+                ])
+
+            ];
+
 
     const general = [
-        new CleanWebpackPlugin(),
-        new webpack.DefinePlugin({
-            __isBrowser__: JSON.stringify(false),
-        }),
+        new CleanWebpackPlugin({verbose: true,}),
         new HTMLWebpackPlugin({
-            template:path.resolve(__dirname, '../src/public/index.html'),
+            template:path.resolve(__dirname, '../src/assets/html/index.html'),
+            favicon:path.resolve(__dirname, '../src/assets/ico/favicon.ico'),
             minify: {
                 collapseWhitespace:!isDev
             }
         }),
-        new CopyWebpackPlugin([
-            {
-                from: path.resolve(__dirname, '../src/public'),
-                to: path.resolve(__dirname, '../dist/static')
-            }
-        ]),
+        new webpack.DefinePlugin({
+            __isBrowser__: JSON.stringify(isBrowser),
+        }),
+
         new webpack.ContextReplacementPlugin(
             /moment[/\\]locale$/,
             /en|ru/
         )
     ];
+
+    let allPlug = general.concat(plugNodeOrWeb);
 
     const prod = [
         new MiniCssExtractPlugin({
@@ -94,28 +107,24 @@ const plugins = () =>{
 
     const dev = [];
 
+
+
     if(isDev){
 
         if(Array.isArray(dev) && dev.length > 0){
-            return general.concat(dev);
+            return allPlug.concat(dev);
         }
-        return general;
+        return allPlug;
     }
 
 
     if(Array.isArray(prod) && prod.length > 0){
-        return general.concat(prod);
+        return allPlug.concat(prod);
     }
-    return general;
 
-
-
+    return allPlug;
 
 };
-
-
-
-
 
 
 
