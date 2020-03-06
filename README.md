@@ -17,6 +17,8 @@ sass
 less
  
 typescript
+
+graphql
  
 react
 

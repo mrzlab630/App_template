@@ -33,9 +33,6 @@
     "test": "webpack --config webpack.test.js && concurrently \"webpack --config webpack.test.js\" \"mocha --watch\"",
     "prod": "webpack --mode production --config webpack_config/webpack.prod.config.js",
     "stats": "webpack --json > stats.json && webpack-bundle-analyzer stats.json",
-    "openLinux": "xdg-open http://localhost:4000",
-    "openMac": "open http://localhost:4000",
-    "openWin": "start http://localhost:4000"
   },
   "dependencies": {
     "compression": "^1.7.4",
