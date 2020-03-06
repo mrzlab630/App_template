@@ -137,6 +137,14 @@ const html = {
     }]
 };
 
+const handlebars = {
+    test: /\.(hbs|handlebars)$/,
+    use:[{
+        loader: "handlebars-loader",
+    }]
+};
+
+
 
 module.exports =  {
                         js,
@@ -152,5 +160,6 @@ module.exports =  {
                         imgs,
                         svgToUrl,
                         fonts,
-                        html
+                        html,
+                        handlebars
                     };

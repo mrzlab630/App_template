@@ -21,6 +21,7 @@ import {getPagesFromAPI,toggleLanguage} from '../../store/actions';
 import serialize from 'serialize-javascript';
 import hbs from "handlebars";
 import {authorization} from "./index";
+import indexPg from '../../assets/theme/index.hbs';
 
 
 
@@ -58,32 +59,29 @@ router.use("/*", async (req, res) => {
 
 
     const theHtml = `<!doctype html>
-<html lang="${lang}" xmlns:og="http://ogp.me/ns#">
+<html lang="{{{lang}}}" xmlns:og="http://ogp.me/ns#">
   <head>
       <meta charset="utf-8">
-                ${helmet.title.toString()}
-                ${helmet.meta.toString()}
-                ${helmet.link.toString()}
+      {{{title}}}
+      {{{meta}}}
+      {{{link}}}
                 <meta name="theme-color">
-            <base href="${typeof document !== 'undefined' && document.location ||  store.getState().domain}" />
+            <base href="{{{baseUrl}}}" />
    
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link rel="shortcut icon" href="/public/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="manifest" href="/public/manifest.json">   
   <!--  <link rel="preload" href="/public/styles.css" as="style" /> -->
     <link rel="stylesheet" href="/public/styles.css">
-        ${fonts}
+       {{{fonts}}}
   </head>
-  <body class="${darkMode ? 'dark-mode' : 'day-mode'}">
+  <body class="{{{bodyClass}}}">
   <div id="reactele">{{{reactele}}}</div>
   <script>
-    window.__INITIAL_STATE_DATA__ = ${serialize(store.getState()).replace(
-        /</g,
-        '\\u003c'
-    )}       
+    window.__INITIAL_STATE_DATA__ = {{{initState}}}       
       </script>
-    <script src="public/vendors~client.js" type="text/javascript"></script>
-    <script src="public/client.js" type="text/javascript"></script>
+    <script src="client/vendors~client.js" type="text/javascript"></script>
+    <script src="client/client.js" type="text/javascript"></script>
 
     
     <script>
@@ -106,7 +104,6 @@ router.use("/*", async (req, res) => {
   `;
 
 
-
   if (context.url) {
     res.writeHead(301, { Location: context.url });
     res.end()
@@ -115,6 +112,8 @@ router.use("/*", async (req, res) => {
 
     const hbsTemplate = hbs.compile(theHtml);
 
+    const initState = serialize(store.getState()).replace(/</g,'\\u003c');
+
     const reactComp = renderToString(
         <Provider store={store} >
             <StaticRouter location={reqUrl || '/'} context={context}>
@@ -122,7 +121,20 @@ router.use("/*", async (req, res) => {
         </StaticRouter>
         </Provider>);
 
-    const htmlToSend = hbsTemplate({ reactele: reactComp });
+
+
+    const htmlToSend = hbsTemplate({
+                                            lang,
+                                            baseUrl:typeof document !== 'undefined' && document.location ||  store.getState().domain,
+                                            title:helmet.title.toString(),
+                                            meta:helmet.meta.toString(),
+                                            link:helmet.link.toString(),
+                                            fonts,
+                                            initState,
+                                            bodyClass:darkMode ? 'dark-mode' : 'day-mode',
+                                            reactele: reactComp,
+
+                                        });
 
     res.send(htmlToSend);
 

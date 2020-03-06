@@ -46,11 +46,17 @@ const plugins = (isBrowser) =>{
     const general = [
         new CleanWebpackPlugin({verbose: true,}),
         new HTMLWebpackPlugin({
-            template:path.resolve(__dirname, '../src/assets/html/index.html'),
+            title: 'Template',
+            template:path.resolve(__dirname, '../src/assets/theme/index.hbs'),
             favicon:path.resolve(__dirname, '../src/assets/ico/favicon.ico'),
-            minify: {
-                collapseWhitespace:!isDev
-            }
+            minify: !isDev && {
+                                html5: true,
+                                collapseWhitespace: true,
+                                caseSensitive: true,
+                                removeComments: true,
+                                removeEmptyElements: true
+                            },
+
         }),
         new webpack.DefinePlugin({
             __isBrowser__: JSON.stringify(isBrowser),

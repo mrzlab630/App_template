@@ -85,6 +85,8 @@ app.use(morgan('combined',{stream:accessLogStream}));
 
 app.use('/public', express.static(path.resolve(__dirname,'public')));
 
+app.use('/client', express.static(path.resolve(__dirname,'client')));
+
 
 app.use(
     "/graphql",
@@ -97,6 +99,7 @@ app.get("/*", ssr);
 
 const servPortDetect = port || 4000;
 const myIp = getLocalExternalIP();
+
 
 server.listen(servPortDetect, function listenHandler(err) {
 
@@ -111,5 +114,7 @@ server.listen(servPortDetect, function listenHandler(err) {
 ->                    local machine 💻: http://localhost:${servPortDetect} | lan 🌐: http://${myIp}:${servPortDetect}
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 `);
+
     openInBrowser(`http://localhost:${servPortDetect}`, null,err => console.error(err));
+
 });

@@ -1,15 +1,19 @@
 {
   "name": "application_start_template_ssr",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "template app: server side rendering",
   "engines": {
     "node": ">=10.14.2"
   },
   "browserslist": "> 0.25%, not dead",
+  "browser": {
+    "child_process": false
+  },
   "author": "mrZ <mrzlab630@gmail.com>",
   "license": "MIT",
   "keywords": [
     "server side rendering",
+    "graphql",
     "webpack",
     "babel",
     "eslint",
@@ -27,12 +31,13 @@
     "myIp": "node ip.js",
     "copy_static_assets": "node copyStaticAssets.js",
     "create_index_file": "node createFile.js",
+    "dev:start": "nodemon  dist/index.js",
     "dev:build": "cross-env NODE_ENV=development webpack --mode development --config webpack_config/webpack.dev.config.js",
-    "dev:start":"nodemon  dist/index.js",
-    "dev": "concurrently \"yarn create_index_file\" \"yarn dev:build\" \"yarn dev:start\" ",
+    "dev": "concurrently \"yarn create_index_file\" \"yarn dev:build\" \"yarn dev:start\"",
+    "prod:build": "cross-env NODE_ENV=production webpack --mode production --config webpack_config/webpack.prod.config.js",
+    "prod:start": "NODE_ENV=production node dist/index.js",
     "test": "webpack --config webpack.test.js && concurrently \"webpack --config webpack.test.js\" \"mocha --watch\"",
-    "prod": "webpack --mode production --config webpack_config/webpack.prod.config.js",
-    "stats": "webpack --json > stats.json && webpack-bundle-analyzer stats.json",
+    "stats": "webpack --json > stats.json && webpack-bundle-analyzer stats.json"
   },
   "dependencies": {
     "compression": "^1.7.4",
@@ -76,6 +81,7 @@
     "eslint-plugin-react": "^7.18.3",
     "file-loader": "^5.0.2",
     "fs-extra": "^8.1.0",
+    "handlebars-loader": "^1.7.1",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
     "ignore-loader": "^0.1.2",

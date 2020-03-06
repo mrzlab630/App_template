@@ -1,6 +1,7 @@
 const externals = require('./externals');
 
-const {js,
+const {
+    js,
     ts,
     reactJsxTsx,
     cssInStyle,
@@ -10,7 +11,9 @@ const {js,
     imgs,
     svgToUrl,
     fonts,
-    html} = require('./loaders');
+    html,
+    handlebars
+            } = require('./loaders');
 const plugins  = require('./plugins');
 const entry = require('./entry');
 const output = require('./output');
@@ -37,7 +40,8 @@ const serverConfig = {
                                 js,
                                 ts,
                                 reactJsxTsx,
-                                ignoreStyle
+                                ignoreStyle,
+                                handlebars
                             ]
                         },
                         plugins:plugins(false),
@@ -62,7 +66,8 @@ const clientConfig = {
             imgs,
             svgToUrl,
             fonts,
-            html
+            html,
+            handlebars
         ]
     },
     optimization: {
@@ -71,7 +76,7 @@ const clientConfig = {
         }
     },
     plugins:plugins(true),
-    output: output("../dist/public"),
+    output: output("../dist/client"),
     resolve:resolve
 };
 
