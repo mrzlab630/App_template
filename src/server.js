@@ -25,7 +25,7 @@ import {appSchema} from './schema';
 
 import {ssr} from './routing/server';
 
-import {getLocalExternalIP} from './utilities';
+import {getLocalExternalIP,openInBrowser} from './utilities';
 import {port} from '../config';
 
 
@@ -98,7 +98,12 @@ app.get("/*", ssr);
 const servPortDetect = port || 4000;
 const myIp = getLocalExternalIP();
 
-server.listen(servPortDetect, function listenHandler() {
+server.listen(servPortDetect, function listenHandler(err) {
+
+    if(err){
+        return console.error(err);
+    }
+
     console.info(`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ->        🚀 Server is start        
@@ -106,4 +111,5 @@ server.listen(servPortDetect, function listenHandler() {
 ->                    local machine 💻: http://localhost:${servPortDetect} | lan 🌐: http://${myIp}:${servPortDetect}
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 `);
+    openInBrowser(`http://localhost:${servPortDetect}`, null,err => console.error(err));
 });

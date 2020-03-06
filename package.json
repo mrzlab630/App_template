@@ -23,6 +23,7 @@
     "chai"
   ],
   "scripts": {
+    "openInBrowser": "node openInBrowser.js",
     "myIp": "node ip.js",
     "copy_static_assets": "node copyStaticAssets.js",
     "create_index_file": "node createFile.js",

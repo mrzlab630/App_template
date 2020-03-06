@@ -3,7 +3,9 @@ const InfoInConsole = () =>{
 
   //  document.body.contentEditable=true; //редактор текста
 
-let css = 'color:red;';
+    let css = 'color:red;';
+    const d = new Date();
+    const year = d.getFullYear();
 
 return console.log(`%c
 ─▌█──
@@ -12,7 +14,7 @@ return console.log(`%c
 ─▐▐ 
 ─▐▐ 
 ──────────
-© 2019 by mrZ
+© ${year} by mrZ
 ──────────────────
 📧 mrZ@mrZLab630.pw
 ────────────────────────`, css);

@@ -39,6 +39,8 @@ chai
  
  **createFile.js** -- create index.js in dist
  
+ **openInBrowser.js** -- open url in Browser
+ 
  **__isBrowser__** global var for SSR
  
  <br>
