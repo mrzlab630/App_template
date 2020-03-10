@@ -1,0 +1,18 @@
+@import "vars";
+@import "fonts";
+@import "mixin";
+
+html, body{
+  background-color: $background;
+  overflow: hidden;
+  transition: 0.5s;
+}
+
+
+.dark-mode{
+  filter: invert(90%);
+}
+.day-mode{
+
+}
+
